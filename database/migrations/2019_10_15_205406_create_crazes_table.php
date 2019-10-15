@@ -26,8 +26,8 @@ class CreateCrazesTable extends Migration
             ->onDelete('cascade');
             $table->dateTimeTz('craze_created_at');
             $table->dateTimeTz('craze_as_of');
-            $table->bigInteger('tweet_volume');
-            $table->boolean('promoted_content');
+            $table->bigInteger('tweet_volume')->nullable();
+            $table->boolean('promoted_content')->nullable();
         });
     }
 

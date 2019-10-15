@@ -12,5 +12,5 @@
 */
 
 
-Route::get('/', 'TrendController@index');
+Route::get('/', 'CrazeController@index');
 
