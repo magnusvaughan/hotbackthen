@@ -16,6 +16,8 @@ class CreateTrendsTable extends Migration
         Schema::create('trends', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->char('name', 200);
+            $table->char('url', 300);
         });
     }
 
