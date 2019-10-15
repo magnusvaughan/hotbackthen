@@ -24,8 +24,8 @@ class CreateCrazesTable extends Migration
             $table->foreign('location')
             ->references('id')->on('locations')
             ->onDelete('cascade');
-            $table->dateTimeTz('created_at');
-            $table->dateTimeTz('as_of');
+            $table->dateTimeTz('craze_created_at');
+            $table->dateTimeTz('craze_as_of');
             $table->bigInteger('tweet_volume');
             $table->boolean('promoted_content');
         });
