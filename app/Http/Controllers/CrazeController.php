@@ -10,7 +10,12 @@ use App\Craze;
 
 class CrazeController extends Controller
 {
+
     public function index() {
+        return 'This is the front';
+    }
+
+    public function get() {
 
         $settings = array(
             'oauth_access_token' => env("OAUTH_ACCESS_TOKEN"),
