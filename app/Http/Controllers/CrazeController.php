@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Location;
 use App\Trend;
 use App\Craze;
@@ -12,7 +13,9 @@ class CrazeController extends Controller
 {
 
     public function index() {
-        return 'This is the front';
+        $trends = DB::table('trends')->get();
+
+        return view('welcome', ['trends' => $trends]);
     }
 
     public function get() {

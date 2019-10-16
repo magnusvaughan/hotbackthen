@@ -8,6 +8,8 @@
 
     </head>
     <body>
-        <h1>working</h1>
+        @foreach ($trends as $trend)
+            <p>{{ $trend->name }}</p>
+        @endforeach
     </body>
 </html>
