@@ -23,11 +23,12 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    public function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
             $controller = new CrazeController();
             $controller->get();
+        });
     }
 
     /**
