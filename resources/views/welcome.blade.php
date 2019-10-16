@@ -8,8 +8,11 @@
 
     </head>
     <body>
-        @foreach ($trends as $trend)
-            <p>{{ $trend->name }}</p>
+        @foreach ($trends as $key => $trend)
+            <h2>{{ $key }}</h2>
+            @foreach ($trend as $craze)
+                <p>Hashtag: <strong>{{ $craze['name'] }}</strong>Tweet Volume: <strong>{{ $craze['tweet_volume'] }}</strong></p>
+            @endforeach
         @endforeach
     </body>
 </html>

@@ -13,9 +13,19 @@ class CrazeController extends Controller
 {
 
     public function index() {
-        $trends = DB::table('trends')->get();
+        $trends = DB::table('crazes')
+            ->join('trends', 'crazes.trend', '=', 'trends.id')
+            ->join('locations', 'crazes.location', '=', 'locations.id')
+            ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'crazes.tweet_volume')
+            ->get();
 
-        return view('welcome', ['trends' => $trends]);
+        $sorted_by_location = [];
+
+        foreach ($trends as $trend) {
+            $sorted_by_location[$trend->location][] = ['name' => $trend->trend, "tweet_volume" => $trend->tweet_volume];
+        }
+
+        return view('welcome', ['trends' => $sorted_by_location]);
     }
 
     public function get() {
