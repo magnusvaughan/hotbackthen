@@ -15,3 +15,7 @@
 Route::get('/', 'CrazeController@index');
 Route::get('/get', 'CrazeController@get');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

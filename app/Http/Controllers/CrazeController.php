@@ -13,10 +13,16 @@ class CrazeController extends Controller
 {
 
     public function index() {
+
+        $date = new \DateTime();
+        $date->modify('-6 hours');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+
         $trends = DB::table('crazes')
             ->join('trends', 'crazes.trend', '=', 'trends.id')
             ->join('locations', 'crazes.location', '=', 'locations.id')
             ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'crazes.tweet_volume')
+            ->where('craze_created_at', '>=',$formatted_date)
             ->get();
 
         $sorted_by_location = [];
