@@ -15,7 +15,7 @@ class CrazeController extends Controller
     public function index() {
 
         $date = new \DateTime();
-        $date->modify('-6 hours');
+        $date->modify('-1 hours');
         $formatted_date = $date->format('Y-m-d H:i:s');
 
         $trends = DB::table('crazes')
