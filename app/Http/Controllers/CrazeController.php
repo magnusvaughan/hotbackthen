@@ -17,7 +17,7 @@ class CrazeController extends Controller
         $country = $request->input('country') ? $request->input('country') : 'United States';
 
         $date = new \DateTime();
-        $date->modify('-62 minutes');
+        $date->modify('-62 days');
         $formatted_date = $date->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -40,7 +40,7 @@ class CrazeController extends Controller
         $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
 
         $client = new \GuzzleHttp\Client();
-        $res = $client->get('https://api.unsplash.com/search/photos?per_page=' . count($trends) . '&page=1&query=' . $country . '&orientation=portrait&client_id=' . $unsplash_access_key);
+        $res = $client->get('https://api.unsplash.com/search/photos?per_page=' . count($trends) . '&page=' . rand(1, 5) . '&query=' . $country . '&orientation=portrait&client_id=' . $unsplash_access_key);
         $image_data = json_decode($res->getBody());
 
         $sorted_by_location = [];
