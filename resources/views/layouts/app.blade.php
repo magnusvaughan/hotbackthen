@@ -10,18 +10,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Shade|Roboto+Mono&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -70,11 +69,45 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+    <script>
+        function defer(method) {
+            if (window.jQuery) {
+                method();
+            } else {
+                setTimeout(function() { defer(method) }, 50);
+            }
+        }
+
+        defer(function () {
+            var $grid = $('.grid').imagesLoaded( function() {
+                $grid.masonry({
+                    // set itemSelector so .grid-sizer is not used in layout
+                    itemSelector: '.grid-item',
+                    // use element for option
+                    columnWidth: '.grid-sizer',
+                    percentPosition: true,
+                    gutter: 0
+                });
+            });
+        });
+
+        $( document ).ready(function() {
+            $( "#location-selector" ).change(function() {
+                window.location.href = 'http://' + window.location.hostname + window.location.pathname + 
+                "?country=" + this.value;
+            });
+        });
+
+
+    </script>
 </body>
 </html>

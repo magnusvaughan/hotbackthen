@@ -1,52 +1,33 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Hot Back Then</title>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    </head>
+@section('content')
+<div class="container-fluid">
 
-    <body>
-        <main role="main" class="flex-shrink-0">
-                <div class="container">
-                    @if (Route::has('login'))
-                        {{-- <div class="top-right links">
-                            @auth
-                                <a href="{{ url('/home') }}">Home</a>
-                            @else
-                                <a href="{{ route('login') }}">Login</a>
-        
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}">Register</a>
-                                @endif
-                            @endauth
-                        </div> --}}
-                    @endif
-        
-                    @foreach ($trends as $key => $trend)
-                        <h2>{{ $key }}</h2>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Hashtag</th>
-                                        <th scope="col">Tweet Volume</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($trend as $craze)
-                                    <tr>
-                                        <td>{{ $craze['name'] }}</td>
-                                        <td>{{ $craze['tweet_volume'] }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endforeach
+    <div class="nav-wrapper my-2">
+        <h1>Hot Back Then</h1>
+        <div class="left-nav-wrapper">
+            <div class="prompt">Select a country to see its trending hashtags</div>
+            <select id="location-selector" class="select-css ml-2">
+                @foreach ($locations as $location)
+                    <option value="{{ $location->location }}">{{ $location->location }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="grid-sizer"></div>
+        @foreach ($trends as $craze)
+            <div class="grid-item">
+                <img src={{$craze['image_url']}} class="img-fluid" alt="">
+                <div class="text-overlay-wrapper">
+                    <a class="craze-link" target="__blank" href="{{$craze['url']}}">
+                        {{ trim($craze['name']) }}
+                        <div class="craze-volume">{{ $craze['tweet_volume'] }} tweets</div>
+                    </a>
                 </div>
-        </main>
-    </body>
-</html>
+            </div>  
+        @endforeach
+    </div>
+</div>
+@endsection
