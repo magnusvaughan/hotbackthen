@@ -9,7 +9,7 @@
             <div class="prompt">Select a country to see its trending hashtags</div>
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
-                    <option value="{{ $location->location }}">{{ $location->location }}</option>
+                    <option value="{{ $location->location }}" {{(trim($location->location) == $current_location ? 'selected' : '')}}>{{ $location->location }}</option>
                 @endforeach
             </select>
         </div>

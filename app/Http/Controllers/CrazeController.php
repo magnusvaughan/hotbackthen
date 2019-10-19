@@ -14,8 +14,10 @@ class CrazeController extends Controller
 
     public function index(Request $request) {
 
+        $country = $request->input('country') ? $request->input('country') : 'United States';
+
         $date = new \DateTime();
-        $date->modify('-1 hours');
+        $date->modify('-54 hours');
         $formatted_date = $date->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -27,7 +29,7 @@ class CrazeController extends Controller
             ->join('locations', 'crazes.location', '=', 'locations.id')
             ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'trends.url as url', 'crazes.tweet_volume')
             ->where('craze_created_at', '>=', $formatted_date)
-            ->where('locations.name', '=', ucfirst($request->input('country')))
+            ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')
             ->limit(30)
@@ -38,7 +40,7 @@ class CrazeController extends Controller
         $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
 
         $client = new \GuzzleHttp\Client();
-        $res = $client->get('https://api.unsplash.com/search/photos?per_page=' . count($trends) . '&page=1&query=' . $request->input('country') . '&orientation=portrait&client_id=' . $unsplash_access_key);
+        $res = $client->get('https://api.unsplash.com/search/photos?per_page=' . count($trends) . '&page=1&query=' . $country . '&orientation=portrait&client_id=' . $unsplash_access_key);
         $image_data = json_decode($res->getBody());
 
         $sorted_by_location = [];
@@ -46,7 +48,7 @@ class CrazeController extends Controller
         foreach ($trends as $key => $trend) {
             $sorted_by_location[] = ['name' => $trend->trend, "tweet_volume" => $trend->tweet_volume ?? "Unknown", "url" => $trend->url, "image_url" => $image_data->results[$key]->urls->small ];
         }
-        return view('welcome', ['trends' => $sorted_by_location, 'locations' => $locations]);
+        return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations]);
     }
 
     public function get() {
