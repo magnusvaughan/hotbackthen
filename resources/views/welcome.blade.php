@@ -4,9 +4,9 @@
 <div class="container-fluid">
 
     <div class="nav-wrapper my-2">
-        <h1>Hot Back Then</h1>
+        <a href="/"><h1>Hot Back Then</h1></a>
         <div class="left-nav-wrapper">
-            <div class="prompt">Select a country to see its trending hashtags</div>
+            <div class="prompt">Select a country to see what's trending right now</div>
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
                     <option value="{{ $location->location }}" {{(trim($location->location) == $current_location ? 'selected' : '')}}>{{ $location->location }}</option>
