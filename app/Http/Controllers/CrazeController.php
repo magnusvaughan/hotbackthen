@@ -17,7 +17,7 @@ class CrazeController extends Controller
         $country = $request->input('country') ? $request->input('country') : 'United States';
 
         $date = new \DateTime();
-        $date->modify('-90 minutes');
+        $date->modify('-62 minutes');
         $formatted_date = $date->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
