@@ -15,6 +15,7 @@
 Route::get('/', 'CrazeController@index');
 Route::get('/get', 'CrazeController@get');
 Route::get('/unsplash', 'CrazeController@unsplash');
+Route::get('/save_images', 'CrazeController@save_images');
 
 
 Auth::routes();

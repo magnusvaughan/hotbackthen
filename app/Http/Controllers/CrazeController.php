@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Location;
 use App\Trend;
 use App\Craze;
+use App\LocationImage;
 
 
 class CrazeController extends Controller
@@ -41,16 +42,15 @@ class CrazeController extends Controller
             ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')
-            ->limit(30)
+            ->limit(15)
             ->get();
 
-        // Images from Unsplash
-        $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
-        $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
-
-        $client = new \GuzzleHttp\Client();
-        $res = $client->get('https://api.unsplash.com/search/photos?per_page=' . count($trends) . '&page=' . rand(1, 5) . '&query=' . $country . '&orientation=portrait&client_id=' . $unsplash_access_key);
-        $image_data = json_decode($res->getBody());
+        $images = DB::table('location_images')
+            ->join('locations', 'location_images.location', '=', 'locations.id')
+            ->where('locations.name', 'LIKE', '%'.$country.'%')
+            ->inRandomOrder()
+            ->get()
+            ->all();
 
         $sorted_by_location = [];
 
@@ -59,9 +59,9 @@ class CrazeController extends Controller
                 'name' => $trend->trend, 
                 "tweet_volume" => $trend->tweet_volume ?? "Unknown",
                 "url" => $trend->url, 
-                "image_url" => $image_data->results[$key]->urls->small,
-                "image_html_url" => $image_data->results[$key]->links->html, 
-                "image_username" =>  $image_data->results[$key]->user->username
+                "image_url" => $images[$key]->url,
+                "image_html_url" => $images[$key]->html_url, 
+                "image_username" =>  $images[$key]->username
             ];
         }
         return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations]);
@@ -135,7 +135,60 @@ class CrazeController extends Controller
         
     }
 
-    public function unsplash(Request $request) {
+    public function save_images(Request $request) {
 
+        $locations = DB::table('locations')
+            ->select('locations.name as location', 'locations.id as location_id')
+            ->get()
+            ->all();
+
+        foreach ($locations as $key => $country) {
+
+            $existing_country_images = DB::table('location_images')
+            ->join('locations', 'location_images.location', '=', 'locations.id')
+            ->select('location_images.id as location_images_id','locations.id as locations_id')
+            ->where('location_images.location', '=', strval($country->location_id))
+            ->get();
+
+            if(count($existing_country_images->all()) < 30) {
+
+                $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
+                $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
+
+                $client = new \GuzzleHttp\Client();
+                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . $country->location . '&orientation=portrait&client_id=' . $unsplash_access_key);
+                $image_data = json_decode($res->getBody());
+
+                $current_location_id = DB::table('locations')
+                    ->select('id as location_id')
+                    ->where('name', '=', $country->location)
+                    ->pluck('location_id')
+                    ->first();
+                
+                foreach ($image_data->results as $key => $image) {
+
+                    $existing_image_record = DB::table('location_images')
+                        ->where('location_images.unsplash_id', '=', $location_image_record->unsplash_id)
+                        ->get()
+                        ->all();
+
+                    if(count($existing_image_record) > 0) {
+                        continue;
+                    }
+
+                    $location_image_record = new LocationImage;
+                    $location_image_record->location = $current_location_id;
+                    $location_image_record->unsplash_id = $image->id;
+                    $location_image_record->alt_description = $image->alt_description || "Image of " . $country->location;
+                    $location_image_record->url = $image->urls->small;
+                    $location_image_record->html_url = $image->links->html;
+                    $location_image_record->username = $image->user->username;
+                    $location_image_record->save();
+                }
+
+                echo("New images saved");
+            }
+
+        }
     }
 }
