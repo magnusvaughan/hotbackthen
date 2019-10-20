@@ -168,7 +168,7 @@ class CrazeController extends Controller
                 foreach ($image_data->results as $key => $image) {
 
                     $existing_image_record = DB::table('location_images')
-                        ->where('location_images.unsplash_id', '=', $location_image_record->unsplash_id)
+                        ->where('location_images.unsplash_id', '=', $image->id)
                         ->get()
                         ->all();
 
