@@ -26,6 +26,9 @@
                         <div class="craze-volume">{{ $craze['tweet_volume'] }} tweets</div>
                     </a>
                 </div>
+                <div class="credit-overlay-wrapper">
+                    <a class="craze-credit-link" href="{{ $craze['image_html_url'] }}">photo by {{ $craze['image_username'] }}</a>
+                </div>
             </div>  
         @endforeach
     </div>

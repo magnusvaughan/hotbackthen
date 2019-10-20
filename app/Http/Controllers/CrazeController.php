@@ -12,12 +12,21 @@ use App\Craze;
 class CrazeController extends Controller
 {
 
+    public function __construct() {
+        $this->environment =  env("APP_ENV");
+    }
+
     public function index(Request $request) {
 
         $country = $request->input('country') ? $request->input('country') : 'United States';
-
         $date = new \DateTime();
-        $date->modify('-62 minutes');
+        if($this->environment == 'local') {
+            $date->modify('-62 hours');
+        }
+        else {
+            $date->modify('-62 minutes');
+        }
+
         $formatted_date = $date->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -46,7 +55,14 @@ class CrazeController extends Controller
         $sorted_by_location = [];
 
         foreach ($trends as $key => $trend) {
-            $sorted_by_location[] = ['name' => $trend->trend, "tweet_volume" => $trend->tweet_volume ?? "Unknown", "url" => $trend->url, "image_url" => $image_data->results[$key]->urls->small ];
+            $sorted_by_location[] = [
+                'name' => $trend->trend, 
+                "tweet_volume" => $trend->tweet_volume ?? "Unknown",
+                "url" => $trend->url, 
+                "image_url" => $image_data->results[$key]->urls->small,
+                "image_html_url" => $image_data->results[$key]->links->html, 
+                "image_username" =>  $image_data->results[$key]->user->username
+            ];
         }
         return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations]);
     }

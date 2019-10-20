@@ -10673,12 +10673,21 @@ body {
   font-family: "Roboto Mono", monospace;
 }
 
-.craze-link {
+.credit-overlay-wrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.craze-link,
+.craze-credit-link {
   color: white;
 }
 
 .craze-link:hover,
-.craze-link:focus {
+.craze-link:focus,
+.craze-credit-link:hover,
+.craze-credit-link:focus {
   color: white;
   text-decoration: none;
 }

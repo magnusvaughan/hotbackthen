@@ -30,7 +30,13 @@ body {
     font-family: 'Roboto Mono', monospace;
 }
 
-.craze-link {
+.credit-overlay-wrapper {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+.craze-link, .craze-credit-link {
     color: white;
     &:hover, &:focus {
         color: white;
