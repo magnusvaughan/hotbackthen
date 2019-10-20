@@ -10779,13 +10779,20 @@ h1 {
 }
 
 @media (min-width: 768px) {
-  .grid-sizer,
-  .grid-item {
-    width: 33%;
-  }
-
   .nav-wrapper {
     flex-direction: row;
+  }
+
+  .grid-sizer,
+  .grid-item {
+    width: 33.33333%;
+  }
+}
+
+@media (min-width: 992px) {
+  .grid-sizer,
+  .grid-item {
+    width: 25%;
   }
 }
 

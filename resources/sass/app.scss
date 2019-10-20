@@ -129,19 +129,19 @@ h1 {
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) { 
-    .grid-sizer,
-    .grid-item { width: 33%; }
-
     .nav-wrapper {
         flex-direction: row;
     }
+
+    .grid-sizer,
+    .grid-item { width: 33.33333%; }
 
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-    // .grid-sizer,
-    // .grid-item { width: 20%; }  
+    .grid-sizer,
+    .grid-item { width: 25%; } 
 }
 
 // Extra large devices (large desktops, 1200px and up)
