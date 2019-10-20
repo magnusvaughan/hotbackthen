@@ -17,6 +17,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 </head>
 <body>
     <div id="app">
@@ -78,6 +80,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         function defer(method) {
             if (window.jQuery) {
@@ -105,9 +108,35 @@
                 window.location.href = 'http://' + window.location.hostname + window.location.pathname + 
                 "?country=" + this.value;
             });
+
+            // $("#flatpickr").flatpickr({
+            //     enableTime: true,
+            //     altInput: true,
+            //     altFormat: "F j, Y",
+            //     dateFormat: "Y-m-d",
+            //     enable: [
+            //         {
+            //             from: "16-10-2019",
+            //             to: "today",
+            //         }
+            //     ],
+            //     onChange: function(selectedDates, dateStr, instance) {
+            //         console.log(selectedDates, dateStr, instance)
+            //     },
+
+            // });
+
         });
+    
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137553389-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-
+        gtag('config', 'UA-137553389-3');
     </script>
 </body>
 </html>
