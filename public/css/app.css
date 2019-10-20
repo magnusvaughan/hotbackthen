@@ -10652,7 +10652,7 @@ body {
 
 .grid-sizer,
 .grid-item {
-  width: 20%;
+  width: 100%;
 }
 
 /* 2 columns */
@@ -10677,6 +10677,7 @@ body {
   position: absolute;
   bottom: 8px;
   right: 8px;
+  max-width: 100%;
 }
 
 .craze-link,
@@ -10696,6 +10697,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 .left-nav-wrapper {
@@ -10767,5 +10769,30 @@ h1 {
 
 .select-css option {
   font-weight: normal;
+}
+
+@media (min-width: 576px) {
+  .grid-sizer,
+  .grid-item {
+    width: 50%;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-sizer,
+  .grid-item {
+    width: 33%;
+  }
+
+  .nav-wrapper {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1500px) {
+  .grid-sizer,
+  .grid-item {
+    width: 20%;
+  }
 }
 
