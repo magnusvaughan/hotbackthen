@@ -10653,6 +10653,7 @@ main,
 }
 
 body {
+  height: 100%;
   background: black;
 }
 
