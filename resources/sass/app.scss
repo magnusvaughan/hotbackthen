@@ -59,7 +59,7 @@ body {
 
 .left-nav-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
     justify-content: flex-end;
 }
@@ -87,7 +87,7 @@ h1 {
 	font-size: 16px;
     font-family: 'Roboto Mono', monospace;
 	font-weight: 700;
-	color: #444;
+	color: dimgray;
 	line-height: 1.3;
 	padding: .6em 1.4em .5em .8em;
 	width: 100%;
@@ -134,7 +134,30 @@ h1 {
 }
 
 .flatpickr-input {
-    margin-bottom: 0.5rem;
+    // margin-bottom: 0.5rem;
+    border-radius: 0;
+    height: 40px;
+    font-size: 16px;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    color: #444;
+    margin-left: 0.5rem;
+    ::placeholder {
+        color: #444;
+        opacity: 1;
+    }
+}
+
+
+
+.form-control[readonly] {
+    background-color: white;
+}
+
+.flatpickr-calendar {
+    font-size: 16px;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
 }
 
 .no-trends {

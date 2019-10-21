@@ -6,8 +6,7 @@
     <div class="nav-wrapper my-2">
         <a href="/"><h1>Hot Back Then</h1></a>
         <div class="left-nav-wrapper">
-            <div class="prompt">Select a country to see what's trending right now</div>
-            {{-- <input placeholder="Within the last hour" class="flatpickr flatpickr-input" id="flatpickr" class="datepicker-text" /> --}}
+            {{-- <div class="prompt">Select a country to see what's trending right now</div> --}}
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
                     <option value="{{ $location->location }}" 
@@ -16,6 +15,7 @@
                     </option>
                 @endforeach
             </select>
+            <input placeholder="Within the last hour" class="flatpickr flatpickr-input" id="flatpickr" class="datepicker-text" />
         </div>
     </div>
 
