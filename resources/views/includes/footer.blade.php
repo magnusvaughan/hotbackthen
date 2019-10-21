@@ -1,0 +1,1 @@
+<div id="copyright text-right">© Made by <a target="__blank" href="https://twitter.com/magnusvaughan">Magnus</a> </div>

@@ -9,7 +9,7 @@
 
 
 html, body,#app,main,.container-fluid {
-    height: 100%;
+    min-height: 100%;
 }
 
 body {
@@ -165,6 +165,19 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    a {
+        color: white;
+        &:hover, &:visited, &:focus {
+            color: white;
+            text-decoration: none;
+        }
+    }
 }
 
 // Small devices (landscape phones, 576px and up)

@@ -76,6 +76,9 @@
         <main>
             @yield('content')
         </main>
+        <footer>
+            @include('includes.footer')
+        </footer>
     </div>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>

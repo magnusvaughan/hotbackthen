@@ -10649,7 +10649,7 @@ body,
 #app,
 main,
 .container-fluid {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -10838,6 +10838,23 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+footer {
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+footer a {
+  color: white;
+}
+
+footer a:hover,
+footer a:visited,
+footer a:focus {
+  color: white;
+  text-decoration: none;
 }
 
 @media (min-width: 576px) {
