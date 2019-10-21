@@ -22,7 +22,7 @@ class CrazeController extends Controller
         $country = $request->input('country') ? $request->input('country') : 'United States';
         $date = new \DateTime();
         if($this->environment == 'local') {
-            $date->modify('-62 hours');
+            $date->modify('-1000 minutes');
         }
         else {
             $date->modify('-62 minutes');
@@ -31,8 +31,18 @@ class CrazeController extends Controller
         $formatted_date = $date->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
-            ->select('locations.name as location')
-            ->get();
+            ->join('crazes', 'locations.id', '=', 'crazes.location')
+            ->select('locations.name as location', 
+                DB::raw('COUNT(DISTINCT crazes.id) as craze_count')
+            )
+            ->where('crazes.created_at', '>=', $formatted_date)
+            ->groupBy('locations.name')
+            ->orderBy('locations.name')
+            ->get()
+            ->all();
+
+        // var_dump($locations);
+        // die;
 
         $trends = DB::table('crazes')
             ->join('trends', 'crazes.trend', '=', 'trends.id')
@@ -42,8 +52,9 @@ class CrazeController extends Controller
             ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')
-            ->limit(15)
-            ->get();
+            ->limit(30)
+            ->get()
+            ->all();
 
         $images = DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
@@ -55,7 +66,8 @@ class CrazeController extends Controller
         $sorted_by_location = [];
 
         foreach ($trends as $key => $trend) {
-            $sorted_by_location[] = [
+            if($key < count($images)) {
+                $sorted_by_location[] = [
                 'name' => $trend->trend, 
                 "tweet_volume" => $trend->tweet_volume ?? "Unknown",
                 "url" => $trend->url, 
@@ -63,8 +75,15 @@ class CrazeController extends Controller
                 "image_html_url" => $images[$key]->html_url, 
                 "image_username" =>  $images[$key]->username
             ];
+            }
+            else {
+                break;
+            }
         }
-        return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations]);
+
+        $image_count = count($images);
+
+        return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations, 'image_count' => $image_count]);
     }
 
     public function get() {

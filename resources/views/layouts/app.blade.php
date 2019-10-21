@@ -109,22 +109,22 @@
                 "?country=" + this.value;
             });
 
-            // $("#flatpickr").flatpickr({
-            //     enableTime: true,
-            //     altInput: true,
-            //     altFormat: "F j, Y",
-            //     dateFormat: "Y-m-d",
-            //     enable: [
-            //         {
-            //             from: "16-10-2019",
-            //             to: "today",
-            //         }
-            //     ],
-            //     onChange: function(selectedDates, dateStr, instance) {
-            //         console.log(selectedDates, dateStr, instance)
-            //     },
+            $("#flatpickr").flatpickr({
+                enableTime: true,
+                altInput: true,
+                altFormat: "F j, Y",
+                dateFormat: "Y-m-d",
+                enable: [
+                    {
+                        from: "16-10-2019",
+                        to: "today",
+                    }
+                ],
+                onChange: function(selectedDates, dateStr, instance) {
+                    console.log(selectedDates, dateStr, instance)
+                },
 
-            // });
+            });
 
         });
     

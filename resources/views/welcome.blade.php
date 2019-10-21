@@ -10,27 +10,34 @@
             {{-- <input placeholder="Within the last hour" class="flatpickr flatpickr-input" id="flatpickr" class="datepicker-text" /> --}}
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
-                    <option value="{{ $location->location }}" {{(trim($location->location) == $current_location ? 'selected' : '')}}>{{ $location->location }}</option>
+                    <option value="{{ $location->location }}" 
+                        {{(trim($location->location) == $current_location ? 'selected' : '')}}>
+                        {{ $location->location }} 
+                    </option>
                 @endforeach
             </select>
         </div>
     </div>
 
+    <h1>{{ $image_count }}</h1>
+
     <div class="grid">
         <div class="grid-sizer"></div>
-        @foreach ($trends as $craze)
+        @foreach ($trends as $key => $craze)
+            @if ($key < $image_count)
             <div class="grid-item">
                 <img src={{$craze['image_url']}} class="img-fluid" alt="">
                 <div class="text-overlay-wrapper">
                     <a class="craze-link" target="__blank" href="{{$craze['url']}}">
                         {{ trim($craze['name']) }}
-                        <div class="craze-volume">{{ $craze['tweet_volume'] }} tweets</div>
+                        <div class="craze-volume">{{ $craze['tweet_volume'] }} tweets {{$key}}</div>
                     </a>
                 </div>
                 <div class="credit-overlay-wrapper">
                     <a class="craze-credit-link" href="{{ $craze['image_html_url'] }}">photo by {{ $craze['image_username'] }}</a>
                 </div>
-            </div>  
+            </div> 
+            @endif 
         @endforeach
     </div>
 </div>
