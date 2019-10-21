@@ -8,8 +8,13 @@
 @import '~bootstrap/scss/bootstrap';
 
 
+html, body,#app,main,.container-fluid {
+    height: 100%;
+}
+
 body {
     background: black;
+    // font-family: 'Roboto Mono', monospace!important;
 }
 
 /* fluid 5 columns */
@@ -130,6 +135,13 @@ h1 {
 
 .flatpickr-input {
     margin-bottom: 0.5rem;
+}
+
+.no-trends {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 // Small devices (landscape phones, 576px and up)

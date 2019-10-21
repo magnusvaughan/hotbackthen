@@ -22,7 +22,7 @@ class CrazeController extends Controller
         $country = $request->input('country') ? $request->input('country') : 'United States';
         $date = new \DateTime();
         if($this->environment == 'local') {
-            $date->modify('-1000 minutes');
+            $date->modify('-210 minutes');
         }
         else {
             $date->modify('-62 minutes');
@@ -40,9 +40,6 @@ class CrazeController extends Controller
             ->orderBy('locations.name')
             ->get()
             ->all();
-
-        // var_dump($locations);
-        // die;
 
         $trends = DB::table('crazes')
             ->join('trends', 'crazes.trend', '=', 'trends.id')
