@@ -22,7 +22,7 @@ class CrazeController extends Controller
         $country = $request->input('country') ? $request->input('country') : 'United States';
         $date = new \DateTime();
         if($this->environment == 'local') {
-            $date->modify('-62 minutes');
+            $date->modify('-622 minutes');
         }
         else {
             $date->modify('-62 minutes');

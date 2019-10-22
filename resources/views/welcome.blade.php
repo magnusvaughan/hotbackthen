@@ -15,7 +15,9 @@
                     </option>
                 @endforeach
             </select>
-            <input placeholder="Within the last hour" class="flatpickr flatpickr-input" id="flatpickr" class="datepicker-text" />
+            <input placeholder="Today" class="flatpickr flatpickr-input" id="flatpickr-date" class="datepicker-text" />
+            <input placeholder="Now" class="flatpickr flatpickr-input" id="flatpickr-time" class="datepicker-text" />
+            <button class="btn btn-light">Search</button>
         </div>
     </div>
 

@@ -112,11 +112,11 @@
                 "?country=" + this.value;
             });
 
-            $("#flatpickr").flatpickr({
-                enableTime: true,
+            $("#flatpickr-date").flatpickr({
+                enableTime: false,
                 altInput: true,
-                altFormat: "F j, Y",
-                dateFormat: "Y-m-d",
+                altFormat: "Y m d H:i",
+                dateFormat: "Y m d H:i",
                 enable: [
                     {
                         from: "16-10-2019",
@@ -126,7 +126,23 @@
                 onChange: function(selectedDates, dateStr, instance) {
                     console.log(selectedDates, dateStr, instance)
                 },
+            });
 
+            $("#flatpickr-time").flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                altInput: true,
+                altFormat: "Y m d H:i",
+                dateFormat: "Y m d H:i",
+                enable: [
+                    {
+                        from: "16-10-2019",
+                        to: "today",
+                    }
+                ],
+                onChange: function(selectedDates, dateStr, instance) {
+                    console.log(selectedDates, dateStr, instance)
+                },
             });
 
         });
