@@ -20,22 +20,19 @@ class CrazeController extends Controller
     public function index(Request $request) {
 
         $country = $request->input('country') ? $request->input('country') : 'United States';
-        $date = new \DateTime();
-        if($this->environment == 'local') {
-            $date->modify('-622 minutes');
-        }
-        else {
-            $date->modify('-62 minutes');
-        }
-
-        $formatted_date = $date->format('Y-m-d H:i:s');
+        $end_date = new \DateTime($request->input('date'));
+        $end_date = $end_date->format('Y-m-d H:i:s');
+        $start_date = new \DateTime($request->input('date'));
+        $start_date = $start_date->modify('-24 hours');
+        $start_date  = $start_date ->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
             ->join('crazes', 'locations.id', '=', 'crazes.location')
             ->select('locations.name as location', 
                 DB::raw('COUNT(DISTINCT crazes.id) as craze_count')
             )
-            ->where('crazes.created_at', '>=', $formatted_date)
+            ->where('crazes.created_at', '>=', $start_date)
+            ->where('crazes.created_at', '<', $end_date)
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get()
@@ -45,7 +42,8 @@ class CrazeController extends Controller
             ->join('trends', 'crazes.trend', '=', 'trends.id')
             ->join('locations', 'crazes.location', '=', 'locations.id')
             ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'trends.url as url', 'crazes.tweet_volume')
-            ->where('craze_created_at', '>=', $formatted_date)
+            ->where('craze_created_at', '>=', $start_date)
+            ->where('craze_created_at', '<', $end_date)
             ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')

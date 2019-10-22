@@ -112,37 +112,31 @@
                 "?country=" + this.value;
             });
 
-            $("#flatpickr-date").flatpickr({
+            var selectedDate = new Date("Y-m-d");
+
+            $("#flatpickr-date-input").flatpickr({
                 enableTime: false,
                 altInput: true,
-                altFormat: "Y m d H:i",
-                dateFormat: "Y m d H:i",
+                altFormat: "J F Y",
+                dateFormat: "Y-m-d",
                 enable: [
                     {
-                        from: "16-10-2019",
+                        from: "2019-10-16",
                         to: "today",
                     }
                 ],
                 onChange: function(selectedDates, dateStr, instance) {
-                    console.log(selectedDates, dateStr, instance)
+                    selectedDate = dateStr;
                 },
             });
 
-            $("#flatpickr-time").flatpickr({
-                enableTime: true,
-                noCalendar: true,
-                altInput: true,
-                altFormat: "Y m d H:i",
-                dateFormat: "Y m d H:i",
-                enable: [
-                    {
-                        from: "16-10-2019",
-                        to: "today",
-                    }
-                ],
-                onChange: function(selectedDates, dateStr, instance) {
-                    console.log(selectedDates, dateStr, instance)
-                },
+            $('#search-submit').click(function() {
+                var country =  $( "#location-selector option:selected" ).text().trim();
+                if(typeof selectedDate != undefined) {
+                    var date = selectedDate;
+                }
+                window.location.href = 'http://' + window.location.hostname + window.location.pathname + 
+                "?country=" + country + '&date=' + date;
             });
 
         });
