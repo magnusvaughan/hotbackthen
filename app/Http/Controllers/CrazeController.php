@@ -170,7 +170,7 @@ class CrazeController extends Controller
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
 
                 $client = new \GuzzleHttp\Client();
-                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . (trim($country->location) == 'Wordlwide' ? 'landscape' : $country->location)  . '&orientation=portrait&client_id=' . $unsplash_access_key);
+                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . (trim($country->location) == 'Worldwide' ? 'landscape' : $country->location)  . '&orientation=portrait&client_id=' . $unsplash_access_key);
                 $image_data = json_decode($res->getBody());
 
                 $current_location_id = DB::table('locations')
