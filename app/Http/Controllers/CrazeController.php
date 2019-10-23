@@ -23,7 +23,7 @@ class CrazeController extends Controller
         $end_date = new \DateTime($request->input('date'));
         $end_date = $end_date->format('Y-m-d H:i:s');
         $start_date = new \DateTime($request->input('date'));
-        $start_date = $start_date->modify('-6220 minutes');
+        $start_date = $start_date->modify('-62 minutes');
         $start_date  = $start_date ->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -164,7 +164,7 @@ class CrazeController extends Controller
             ->get();
 
             // if(count($existing_country_images->all()) < 30) 
-            if($country->location_id == 63) {
+            if(count($existing_country_images->all()) < 60) {
 
                 $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
