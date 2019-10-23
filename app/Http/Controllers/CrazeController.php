@@ -23,7 +23,7 @@ class CrazeController extends Controller
         $end_date = new \DateTime($request->input('date'));
         $end_date = $end_date->format('Y-m-d H:i:s');
         $start_date = new \DateTime($request->input('date'));
-        $start_date = $start_date->modify('-6220 minutes');
+        $start_date = $start_date->modify('-62 minutes');
         $start_date  = $start_date ->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
