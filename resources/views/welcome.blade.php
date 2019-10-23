@@ -22,7 +22,8 @@
 
     @if(count($trends) <= 0)
         <div class="no-trends">
-            <h1 class="no-trends-text">No trends for this location. Please choose another</h1>
+            <h1 class="no-trends-text">No trends for this location at this time.</h1>
+            <h2 class="no-trends-text">Please choose another.</h1>
         </div>
     @else
         <div class="grid">
