@@ -23,7 +23,7 @@ class CrazeController extends Controller
         $end_date = new \DateTime($request->input('date'));
         $end_date = $end_date->format('Y-m-d H:i:s');
         $start_date = new \DateTime($request->input('date'));
-        $start_date = $start_date->modify('-62 minutes');
+        $start_date = $start_date->modify('-6220 minutes');
         $start_date  = $start_date ->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -164,13 +164,13 @@ class CrazeController extends Controller
             ->get();
 
             // if(count($existing_country_images->all()) < 30) 
-            if(count($existing_country_images->all()) < 60) {
+            if($country->location_id == 64) {
 
                 $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
 
                 $client = new \GuzzleHttp\Client();
-                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . ($country->location == 'Wordlwide' ? 'landscape' : $country->location)  . '&orientation=portrait&client_id=' . $unsplash_access_key);
+                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . (trim($country->location) == 'Wordlwide' ? 'landscape' : $country->location)  . '&orientation=portrait&client_id=' . $unsplash_access_key);
                 $image_data = json_decode($res->getBody());
 
                 $current_location_id = DB::table('locations')
