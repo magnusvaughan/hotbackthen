@@ -19,11 +19,11 @@ class CrazeController extends Controller
 
     public function index(Request $request) {
 
-        $country = $request->input('country') ? $request->input('country') : 'United States';
+        $country = $request->input('country') ? $request->input('country') : 'Worldwide';
         $end_date = new \DateTime($request->input('date'));
         $end_date = $end_date->format('Y-m-d H:i:s');
         $start_date = new \DateTime($request->input('date'));
-        $start_date = $start_date->modify('-24 hours');
+        $start_date = $start_date->modify('-62 minutes');
         $start_date  = $start_date ->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -100,10 +100,9 @@ class CrazeController extends Controller
             ->performRequest(true, [CURLOPT_TIMEOUT => 0]);
         $locations = json_decode($response);
 
-
         $countries = [];
         foreach ($locations as $location) {
-            if($location->placeType->name === "Country") {
+            if($location->placeType->name === "Country" || $location->placeType->name === "Supername") {
                 $countries[] = $location;
             }
         }
@@ -113,10 +112,10 @@ class CrazeController extends Controller
             if ($location_record === null) {
                 $location_record = new Location;
                 $location_record->name = $country->name;
-                $location_record->type = $country->placeType->name;
+                $location_record->type = isset($country->placeType->name) ? $country->placeType->name : 'Worldwide';
                 $location_record->country = $country->country;
                 $location_record->woeid = $country->woeid;
-                $location_record->country_code = $country->countryCode;
+                $location_record->country_code = $country->name == 'Worldwide' ? 'WW' : $country->countryCode;
                 $location_record->save();
             }
             $url2 = 'https://api.twitter.com/1.1/trends/place.json';
@@ -170,7 +169,7 @@ class CrazeController extends Controller
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
 
                 $client = new \GuzzleHttp\Client();
-                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . $country->location . '&orientation=portrait&client_id=' . $unsplash_access_key);
+                $res = $client->get('https://api.unsplash.com/search/photos?per_page=30&page=' . rand(1, 5) . '&query=' . ($country->location == 'Wordlwide' ? 'landscape' : $country->location)  . '&orientation=portrait&client_id=' . $unsplash_access_key);
                 $image_data = json_decode($res->getBody());
 
                 $current_location_id = DB::table('locations')
