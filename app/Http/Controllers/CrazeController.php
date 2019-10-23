@@ -163,7 +163,8 @@ class CrazeController extends Controller
             ->where('location_images.location', '=', strval($country->location_id))
             ->get();
 
-            if(count($existing_country_images->all()) < 30) {
+            // if(count($existing_country_images->all()) < 30) 
+            if($country->location_id == 63 || $country->location_id == 64) {
 
                 $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
