@@ -85,6 +85,22 @@
     <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+        };
+
         function defer(method) {
             if (window.jQuery) {
                 method();
@@ -112,9 +128,11 @@
                 "?country=" + this.value;
             });
 
-            var selectedDate = new Date("Y-m-d");
+            
+            var selectedDate = getUrlParameter('date') || new Date();
 
             $("#flatpickr-date-input").flatpickr({
+                defaultDate: selectedDate,
                 enableTime: false,
                 altInput: true,
                 altFormat: "J F Y",

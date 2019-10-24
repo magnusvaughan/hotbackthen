@@ -23,7 +23,7 @@ class CrazeController extends Controller
         $end_date = new \DateTime($request->input('date'));
         $end_date = $end_date->format('Y-m-d H:i:s');
         $start_date = new \DateTime($request->input('date'));
-        $start_date = $start_date->modify('-62 minutes');
+        $start_date = $start_date->modify('-24 hours');
         $start_date  = $start_date ->format('Y-m-d H:i:s');
 
         $locations = DB::table('locations')
@@ -31,12 +31,14 @@ class CrazeController extends Controller
             ->select('locations.name as location', 
                 DB::raw('COUNT(DISTINCT crazes.id) as craze_count')
             )
-            ->where('crazes.created_at', '>=', $start_date)
-            ->where('crazes.created_at', '<', $end_date)
+            // ->where('crazes.created_at', '>=', $start_date)
+            // ->where('crazes.created_at', '<', $end_date)
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get()
             ->all();
+
+        // dd($locations);
 
         $trends = DB::table('crazes')
             ->join('trends', 'crazes.trend', '=', 'trends.id')
@@ -58,10 +60,11 @@ class CrazeController extends Controller
             ->get()
             ->all();
 
+        $trends_present = [];
         $sorted_by_location = [];
 
         foreach ($trends as $key => $trend) {
-            if($key < count($images)) {
+            if($key < count($images) && !in_array($trend->trend, $trends_present)) {
                 $sorted_by_location[] = [
                 'name' => $trend->trend, 
                 "tweet_volume" => $trend->tweet_volume ?? "Unknown",
@@ -70,6 +73,7 @@ class CrazeController extends Controller
                 "image_html_url" => $images[$key]->html_url, 
                 "image_username" =>  $images[$key]->username
             ];
+            $trends_present[] = $trend->trend;
             }
             else {
                 break;
@@ -164,7 +168,7 @@ class CrazeController extends Controller
             ->get();
 
             if(count($existing_country_images->all()) < 60) { 
-            // if($country->location_id == 63) {
+            // if($country->location_id == 64) {
 
                 $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
