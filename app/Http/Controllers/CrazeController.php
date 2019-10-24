@@ -53,8 +53,8 @@ class CrazeController extends Controller
             ->get()
             ->all();
 
-        // var_dump($trends);
-        // die;
+        var_dump($trends);
+        die;
 
         $images = DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
@@ -68,7 +68,7 @@ class CrazeController extends Controller
 
         foreach ($trends as $key => $trend) {
             if(!in_array($trend->trend, $trends_present)) {
-                // if($key < count($images)) {
+                if($key < count($images)) {
                     $sorted_by_location[] = [
                     'name' => $trend->trend,
                     "tweet_volume" => $trend->tweet_volume ?? "Unknown",
@@ -78,16 +78,12 @@ class CrazeController extends Controller
                     "image_username" =>  $images[$key]->username
                 ];
                 $trends_present[] = $trend->trend;
-                // }
-                // else {
-                //     break;
-                // }
+                }
+                else {
+                    break;
+                }
             }
         }
-
-        var_dump(count($images));
-        var_dump($trends_present);
-        die;
 
         $image_count = count($images);
 
