@@ -44,14 +44,17 @@ class CrazeController extends Controller
             ->join('trends', 'crazes.trend', '=', 'trends.id')
             ->join('locations', 'crazes.location', '=', 'locations.id')
             ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'trends.url as url', 'crazes.tweet_volume')
-            ->where('craze_created_at', '>=', $start_date)
-            ->where('craze_created_at', '<', $end_date)
+            ->where('crazes.created_at', '>=', $start_date)
+            ->where('crazes.created_at', '<', $end_date)
             ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')
             ->limit(30)
             ->get()
             ->all();
+
+        // var_dump($trends);
+        // die;
 
         $images = DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
