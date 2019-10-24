@@ -68,7 +68,7 @@ class CrazeController extends Controller
 
         foreach ($trends as $key => $trend) {
             if(!in_array($trend->trend, $trends_present)) {
-                if($key < count($images)) {
+                // if($key < count($images)) {
                     $sorted_by_location[] = [
                     'name' => $trend->trend,
                     "tweet_volume" => $trend->tweet_volume ?? "Unknown",
@@ -78,10 +78,10 @@ class CrazeController extends Controller
                     "image_username" =>  $images[$key]->username
                 ];
                 $trends_present[] = $trend->trend;
-                }
-                else {
-                    break;
-                }
+                // }
+                // else {
+                //     break;
+                // }
             }
         }
 
