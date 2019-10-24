@@ -85,6 +85,10 @@ class CrazeController extends Controller
             }
         }
 
+        var_dump(count($images));
+        var_dump($trends_present);
+        die;
+
         $image_count = count($images);
 
         return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations, 'image_count' => $image_count]);
