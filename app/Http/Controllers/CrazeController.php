@@ -49,12 +49,9 @@ class CrazeController extends Controller
             ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')
-            ->limit(30)
+            ->limit(100)
             ->get()
             ->all();
-
-        var_dump($trends);
-        die;
 
         $images = DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
