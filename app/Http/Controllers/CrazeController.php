@@ -49,7 +49,8 @@ class CrazeController extends Controller
             ->where('locations.name', '=', ucfirst($country))
             ->whereNotNull('tweet_volume')
             ->orderByRaw('tweet_volume DESC NULLS LAST')
-            ->limit(100)
+            // ->limit(30)
+            ->distinct()
             ->get()
             ->all();
 
