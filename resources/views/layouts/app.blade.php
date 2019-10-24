@@ -122,13 +122,14 @@
         });
 
         $( document ).ready(function() {
-            $( "#location-selector" ).change(function() {
-                window.location.href = 'http://' + window.location.hostname + window.location.pathname + 
-                "?country=" + this.value;
-            });
+            // $( "#location-selector" ).change(function() {
+            //     window.location.href = 'http://' + window.location.hostname + window.location.pathname + 
+            //     "?country=" + this.value;
+            // });
 
             
-            var selectedDate = getUrlParameter('date') || new Date();
+            var selectedDate = getUrlParameter('date') || new Date().toISOString().slice(0, 10);
+            console.log(selectedDate);
 
             $("#flatpickr-date-input").flatpickr({
                 defaultDate: selectedDate,
@@ -142,6 +143,10 @@
                         to: "today",
                     }
                 ],
+                onReady: function(selectedDates, dateStr, instance) {
+                    console.log(dateStr);
+                    selectedDate = dateStr;   
+                },
                 onChange: function(selectedDates, dateStr, instance) {
                     selectedDate = dateStr;
                 },

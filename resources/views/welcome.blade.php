@@ -7,6 +7,7 @@
         <a href="/"><h1>Hot Back Then</h1></a>
         <div class="left-nav-wrapper">
             {{-- <div class="prompt">Select a country to see what's trending right now</div> --}}
+            <input class="flatpickr flatpickr-input" id="flatpickr-date-input" class="datepicker-text" />
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
                     <option value="{{ $location->location }}" 
@@ -15,7 +16,6 @@
                     </option>
                 @endforeach
             </select>
-            <input placeholder="Today" class="flatpickr flatpickr-input" id="flatpickr-date-input" class="datepicker-text" />
             <button id="search-submit" class="btn btn-light">Search</button>
         </div>
     </div>
