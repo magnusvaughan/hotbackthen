@@ -4,9 +4,11 @@
 <div class="container-fluid">
 
     <div class="nav-wrapper my-2">
-        <a href="/"><h1>Hot Back Then</h1></a>
+        <a href="/">
+            <h1>Hot Back Then</h1>
+            <div class="prompt">An archive of trending tweets around the world</div>
+        </a>
         <div class="left-nav-wrapper">
-            {{-- <div class="prompt">Select a country to see what's trending right now</div> --}}
             <input class="flatpickr flatpickr-input" id="flatpickr-date-input" class="datepicker-text" />
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
