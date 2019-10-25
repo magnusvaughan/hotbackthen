@@ -10744,6 +10744,7 @@ h2 {
   margin-bottom: 1rem;
   margin-left: 0rem;
   vertical-align: super;
+  text-align: center;
 }
 
 .select-css {
@@ -10802,6 +10803,7 @@ h2 {
 }
 
 .flatpickr-input {
+  min-width: 190px;
   margin-bottom: 0.5rem;
   border-radius: 0;
   height: 40px;
@@ -10924,6 +10926,7 @@ footer a:focus {
   .prompt {
     display: inline-block;
     margin-bottom: 0.25rem;
+    text-align: left;
   }
 }
 

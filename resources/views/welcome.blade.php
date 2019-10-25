@@ -6,7 +6,7 @@
     <div class="nav-wrapper my-2">
         <a href="/">
             <h1>Hot Back Then</h1>
-            <div class="prompt">An archive of trending tweets around the world</div>
+            <div class="prompt">A worldwide archive of trending tweets</div>
         </a>
         <div class="left-nav-wrapper">
             <input class="flatpickr flatpickr-input" id="flatpickr-date-input" class="datepicker-text" />
