@@ -21,6 +21,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    {{-- <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css"> --}}
 
 </head>
 <body>
@@ -74,21 +75,14 @@
         });
 
         $( document ).ready(function() {
-            // $( "#location-selector" ).change(function() {
-            //     window.location.href = 'http://' + window.location.hostname + window.location.pathname + 
-            //     "?country=" + this.value;
-            // });
-
-            
             var selectedDate = getUrlParameter('date') || new Date().toISOString().slice(0, 10);
-            console.log(selectedDate);
-
             $("#flatpickr-date-input").flatpickr({
                 defaultDate: selectedDate,
                 enableTime: false,
                 altInput: true,
                 altFormat: "J F Y",
                 dateFormat: "Y-m-d",
+                position: "below center",
                 enable: [
                     {
                         from: "2019-10-16",
@@ -96,7 +90,6 @@
                     }
                 ],
                 onReady: function(selectedDates, dateStr, instance) {
-                    console.log(dateStr);
                     selectedDate = dateStr;   
                 },
                 onChange: function(selectedDates, dateStr, instance) {

@@ -38,7 +38,9 @@ class CrazeController extends Controller
             ->get()
             ->all();
 
-        // dd($locations);
+        $worldwide = $locations[count($locations) - 1];
+        array_pop($locations);
+        array_unshift($locations, $worldwide);
 
         $trends = DB::table('crazes')
             ->join('trends', 'crazes.trend', '=', 'trends.id')
