@@ -10656,6 +10656,12 @@ body {
   background: black;
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 /* fluid 5 columns */
 
 .grid-sizer,
@@ -10861,6 +10867,7 @@ h2 {
 }
 
 footer {
+  display: block;
   color: white;
   text-align: center;
   padding: 1rem;

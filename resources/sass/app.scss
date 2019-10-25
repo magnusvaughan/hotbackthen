@@ -18,6 +18,12 @@ body {
     // font-family: 'Roboto Mono', monospace!important;
 }
 
+#app {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 /* fluid 5 columns */
 .grid-sizer,
 .grid-item { width: 100%; }
@@ -185,6 +191,9 @@ h1, h2 {
 }
 
 footer {
+    // position: absolute;
+    // bottom: 0;
+    display: block;
     color: white;
     text-align: center;
     padding: 1rem;
