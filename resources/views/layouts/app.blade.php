@@ -26,6 +26,10 @@
 </head>
 <body>
     <div id="app">
+        <div id="loader">
+                <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+
         <main>
             @yield('content')
         </main>
@@ -63,6 +67,9 @@
 
         defer(function () {
             var $grid = $('.grid').imagesLoaded( function() {
+                setTimeout(function(){
+                    $('#loader').remove();
+                },2000);
                 $grid.masonry({
                     // set itemSelector so .grid-sizer is not used in layout
                     itemSelector: '.grid-item',
@@ -75,6 +82,9 @@
         });
 
         $( document ).ready(function() {
+            var $menuHeight = $('.nav-wrapper.my-2').height();
+            console.log($menuHeight);
+            $('#loader').css("top", $menuHeight); 
             var selectedDate = getUrlParameter('date') || new Date().toISOString().slice(0, 10);
             $("#flatpickr-date-input").flatpickr({
                 defaultDate: selectedDate,
