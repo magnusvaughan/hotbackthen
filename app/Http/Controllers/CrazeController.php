@@ -90,6 +90,10 @@ class CrazeController extends Controller
         return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations, 'image_count' => $image_count]);
     }
 
+    public function test() {
+        return "<h1>TESTING</h1>";
+    }
+
     public function get() {
 
         $settings = array(

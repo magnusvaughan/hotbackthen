@@ -13,6 +13,8 @@
 
 
 Route::get('/', 'CrazeController@index');
+Route::get('/test', 'CrazeController@test');
+
 Route::get('/get', 'CrazeController@get');
 Route::get('/unsplash', 'CrazeController@unsplash');
 Route::get('/save_images', 'CrazeController@save_images');
