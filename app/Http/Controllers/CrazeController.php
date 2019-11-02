@@ -30,39 +30,41 @@ class CrazeController extends Controller
         $this->start_date  = $start_date;
         $this->end_date = $end_date;
 
-        $locations = DB::table('locations')
+        $locationsCacheKey = 'trends';
+
+        $locations = \Cache::remember($locationsCacheKey, now()->addHours(24), function() {
+            return DB::table('locations')
             ->join('crazes', 'locations.id', '=', 'crazes.location')
             ->select('locations.name as location', 
                 DB::raw('COUNT(DISTINCT crazes.id) as craze_count')
             )
-            // ->where('crazes.created_at', '>=', $start_date)
-            // ->where('crazes.created_at', '<', $end_date)
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get()
             ->all();
+        });
 
-        $cacheKey = 'trends' . $country . isset($redis_end_date) ? $redis_end_date : "";
+
+
+        $trendsCacheKey = 'trends' . $country . isset($redis_end_date) ? $redis_end_date : "";
 
         $worldwide = $locations[count($locations) - 1];
         array_pop($locations);
         array_unshift($locations, $worldwide);
 
-        $trends = \Cache::remember($cacheKey, now()->addHours(24), function() {
-            return DB::table('crazes')
-            ->join('trends', 'crazes.trend', '=', 'trends.id')
-            ->join('locations', 'crazes.location', '=', 'locations.id')
-            ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'trends.url as url', 'crazes.tweet_volume')
-            ->where('crazes.created_at', '>=', $this->start_date)
-            ->where('crazes.created_at', '<', $this->end_date)
-            ->where('locations.name', '=', ucfirst($this->country))
-            ->whereNotNull('tweet_volume')
-            ->orderByRaw('tweet_volume DESC NULLS LAST')
-            // ->limit(30)
-            ->distinct()
-            ->get()
-            ->all();
-        });
+        $trends =DB::table('crazes')
+        ->join('trends', 'crazes.trend', '=', 'trends.id')
+        ->join('locations', 'crazes.location', '=', 'locations.id')
+        ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'trends.url as url', 'crazes.tweet_volume')
+        ->where('crazes.created_at', '>=', $this->start_date)
+        ->where('crazes.created_at', '<', $this->end_date)
+        ->where('locations.name', '=', ucfirst($this->country))
+        ->whereNotNull('tweet_volume')
+        ->orderByRaw('tweet_volume DESC NULLS LAST')
+        // ->limit(30)
+        ->distinct()
+        ->get()
+        ->all();
 
         $images = DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
