@@ -32,7 +32,7 @@ class CrazeController extends Controller
 
         $locationsCacheKey = 'trends';
 
-        $locations = \Cache::remember($locationsCacheKey, now()->addHours(24), function() {
+        $locations = \Cache::remember($locationsCacheKey, now()->addHours(2400), function() {
             return DB::table('locations')
             ->join('crazes', 'locations.id', '=', 'crazes.location')
             ->select('locations.name as location', 
