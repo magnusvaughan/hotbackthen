@@ -59,7 +59,7 @@ class CrazeController extends Controller
         ->where('crazes.created_at', '>=', $this->start_date)
         ->where('crazes.created_at', '<', $this->end_date)
         ->where('locations.name', '=', ucfirst($this->country))
-        ->whereNotNull('tweet_volume')
+        // ->whereNotNull('tweet_volume')
         ->orderByRaw('tweet_volume DESC NULLS LAST')
         // ->limit(30)
         ->distinct()

@@ -37,7 +37,8 @@
                     <div class="text-overlay-wrapper">
                         <a class="craze-link" target="__blank" href="{{$craze['url']}}">
                             {{ trim($craze['name']) }}
-                            <div class="craze-volume">{{ $craze['tweet_volume'] }} tweets</div>
+                            <div class="craze-volume">
+                                {{ $craze['tweet_volume'] != "Unknown" ? $craze['tweet_volume'] . " tweets" : ""}}</div>
                         </a>
                     </div>
                     <div class="credit-overlay-wrapper">
