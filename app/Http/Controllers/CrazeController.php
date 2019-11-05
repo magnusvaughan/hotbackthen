@@ -44,10 +44,6 @@ class CrazeController extends Controller
             ->all();
         });
 
-
-
-        $trendsCacheKey = 'trends' . $country . isset($redis_end_date) ? $redis_end_date : "";
-
         $worldwide = $locations[count($locations) - 1];
         array_pop($locations);
         array_unshift($locations, $worldwide);
@@ -76,27 +72,25 @@ class CrazeController extends Controller
         $trends_present = [];
         $sorted_by_location = [];
 
-        foreach ($trends as $key => $trend) {
-            if(!in_array($trend->trend, $trends_present)) {
-                if($key < count($images)) {
-                    $sorted_by_location[] = [
-                    'name' => $trend->trend,
-                    "tweet_volume" => $trend->tweet_volume ?? "Unknown",
-                    "url" => $trend->url,
-                    "image_url" => $images[$key]->url,
-                    "image_html_url" => $images[$key]->html_url,
-                    "image_username" =>  $images[$key]->username
-                ];
-                $trends_present[] = $trend->trend;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-
         $image_count = count($images);
 
+        foreach ($trends as $key => $trend) {
+            if(!in_array($trend->trend, $trends_present)) {
+                if($key >= $image_count) {
+                    $key = rand(0, $image_count -1);
+                }
+                $sorted_by_location[] = [
+                'name' => $trend->trend,
+                "tweet_volume" => $trend->tweet_volume ?? "Unknown",
+                "url" => $trend->url,
+                "image_url" => $images[$key]->url,
+                "image_html_url" => $images[$key]->html_url,
+                "image_username" =>  $images[$key]->username
+                ];
+                $trends_present[] = $trend->trend;
+            }
+        }
+        
         return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations, 'image_count' => $image_count]);
     }
 
