@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Jenssegers\Agent\Agent;
 use App\Location;
 use App\Trend;
 use App\Craze;
@@ -19,6 +20,7 @@ class CrazeController extends Controller
 
     public function index(Request $request) {
 
+        $agent = new Agent();
         $country = $request->input('country') ? $request->input('country') : 'Worldwide';
         $input_end_date = new \DateTime($request->input('date'));
         $end_date = $input_end_date->format('Y-m-d H:i:s');
@@ -62,12 +64,25 @@ class CrazeController extends Controller
         ->get()
         ->all();
 
-        $images = DB::table('location_images')
+        if($agent->isMobile()) {
+            $images = DB::table('location_images')
+            ->join('locations', 'location_images.location', '=', 'locations.id')
+            ->where('locations.name', 'LIKE', '%'.$country.'%')
+            ->limit(10)
+            ->inRandomOrder()
+            ->get()
+            ->all();
+        }
+        else {
+            $images = DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
             ->where('locations.name', 'LIKE', '%'.$country.'%')
             ->inRandomOrder()
             ->get()
             ->all();
+        }
+
+
 
         $trends_present = [];
         $sorted_by_location = [];
@@ -90,7 +105,7 @@ class CrazeController extends Controller
                 $trends_present[] = $trend->trend;
             }
         }
-        
+
         return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations, 'image_count' => $image_count]);
     }
 
