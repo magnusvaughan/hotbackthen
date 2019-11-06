@@ -106,7 +106,13 @@ class CrazeController extends Controller
             }
         }
 
-        return view('welcome', ['current_location' => $country, 'trends' => $sorted_by_location, 'locations' => $locations, 'image_count' => $image_count]);
+        return view('welcome', [
+            'current_location' => $country, 
+            'trends' => $sorted_by_location, 
+            'locations' => $locations, 
+            'image_count' => $image_count,
+            'is_mobile' => $agent->isMobile() ? "True" : "False"
+            ] );
     }
 
     public function test() {

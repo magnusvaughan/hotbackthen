@@ -9,6 +9,7 @@
             <div class="prompt">A worldwide archive of trending tweets</div>
         </a>
         <div class="left-nav-wrapper">
+        {{-- <h1>{{$is_mobile}}</h1> --}}
             <input class="flatpickr flatpickr-input" id="flatpickr-date-input" class="datepicker-text" />
             <select id="location-selector" class="select-css ml-2">
                 @foreach ($locations as $location)
