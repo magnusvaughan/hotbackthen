@@ -23,66 +23,32 @@ class CrazeController extends Controller
         $agent = new Agent();
         $country = $request->input('country') ? $request->input('country') : 'Worldwide';
         $input_end_date = new \DateTime($request->input('date'));
+        $input_end_date = $input_end_date->modify('tomorrow');
         $end_date = $input_end_date->format('Y-m-d H:i:s');
         $redis_end_date = $input_end_date->format('Y-m-d H');
-        $start_date = new \DateTime($request->input('date'));
-        $start_date = $start_date->modify('-24 hours');
-        $start_date  = $start_date ->format('Y-m-d H:i:s');
+        $start_date = $input_end_date->modify('-24 hours');
+        $start_date = $start_date->format('Y-m-d H:i:s');
         $this->country  = $country;
         $this->start_date  = $start_date;
         $this->end_date = $end_date;
 
-        $locationsCacheKey = 'trends';
-
-        $locations = \Cache::remember($locationsCacheKey, now()->addHours(2400), function() {
-            return DB::table('locations')
-            ->join('crazes', 'locations.id', '=', 'crazes.location')
-            ->select('locations.name as location', 
-                DB::raw('COUNT(DISTINCT crazes.id) as craze_count')
-            )
-            ->groupBy('locations.name')
-            ->orderBy('locations.name')
-            ->get()
-            ->all();
-        });
-
+        $locations = new Location();
+        $locations = $locations->get_with_crazes('trends');
         $worldwide = $locations[count($locations) - 1];
         array_pop($locations);
         array_unshift($locations, $worldwide);
 
-        $trends =DB::table('crazes')
-        ->join('trends', 'crazes.trend', '=', 'trends.id')
-        ->join('locations', 'crazes.location', '=', 'locations.id')
-        ->select('locations.name as location', 'locations.country_code', 'trends.name as trend', 'trends.url as url', 'crazes.tweet_volume')
-        ->where('crazes.created_at', '>=', $this->start_date)
-        ->where('crazes.created_at', '<', $this->end_date)
-        ->where('locations.name', '=', ucfirst($this->country))
-        // ->whereNotNull('tweet_volume')
-        ->orderByRaw('tweet_volume DESC NULLS LAST')
-        // ->limit(30)
-        ->distinct()
-        ->get()
-        ->all();
+        $trends = new Trend();
+        $trends = $trends->get_trends($this->start_date, $this->end_date, $this->country);
+
+        $images = new LocationImage();
 
         if($agent->isMobile()) {
-            $images = DB::table('location_images')
-            ->join('locations', 'location_images.location', '=', 'locations.id')
-            ->where('locations.name', 'LIKE', '%'.$country.'%')
-            ->limit(10)
-            ->inRandomOrder()
-            ->get()
-            ->all();
+            $image = $images->get_mobile($this->country);
         }
         else {
-            $images = DB::table('location_images')
-            ->join('locations', 'location_images.location', '=', 'locations.id')
-            ->where('locations.name', 'LIKE', '%'.$country.'%')
-            ->inRandomOrder()
-            ->get()
-            ->all();
+            $images = $images->get($this->country);
         }
-
-
 
         $trends_present = [];
         $sorted_by_location = [];
@@ -188,21 +154,16 @@ class CrazeController extends Controller
 
     public function save_images(Request $request) {
 
-        $locations = DB::table('locations')
-            ->select('locations.name as location', 'locations.id as location_id')
-            ->get()
-            ->all();
-
+        $locations = new Location();
+        $locations = $location->get();
+        
         foreach ($locations as $key => $country) {
 
-            $existing_country_images = DB::table('location_images')
-            ->join('locations', 'location_images.location', '=', 'locations.id')
-            ->select('location_images.id as location_images_id','locations.id as locations_id')
-            ->where('location_images.location', '=', strval($country->location_id))
-            ->get();
+            $location_images = new LocationImage();
+        
+            $existing_country_images = $location_images->get_by_id($country->location_id);
 
-            if(count($existing_country_images->all()) < 100) { 
-            // if($country->location_id == 64) {
+            if(count($existing_country_images) < 100) { 
 
                 $unsplash_access_key = env("UNSPLASH_ACCESS_KEY");
                 $unsplash_access_secret = env("UNSPLASH_ACCESS_SECRET");
