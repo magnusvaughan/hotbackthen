@@ -17,7 +17,7 @@ class LocationImage extends Model
             ->all();
     }
 
-    public function get_mobile() {
+    public function get_mobile($country) {
        return DB::table('location_images')
             ->join('locations', 'location_images.location', '=', 'locations.id')
             ->where('locations.name', 'LIKE', '%'.$country.'%')
