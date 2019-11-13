@@ -31,7 +31,7 @@ class LocationImage extends Model
         DB::table('location_images')
         ->join('locations', 'location_images.location', '=', 'locations.id')
         ->select('location_images.id as location_images_id','locations.id as locations_id')
-        ->where('location_images.location', '=', strval($country->location_id))
+        ->where('location_images.location', '=', strval($country_id))
         ->get()
         ->all();
     }

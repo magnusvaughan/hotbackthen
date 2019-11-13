@@ -44,7 +44,7 @@ class CrazeController extends Controller
         $images = new LocationImage();
 
         if($agent->isMobile()) {
-            $image = $images->get_mobile($this->country);
+            $images = $images->get_mobile($this->country);
         }
         else {
             $images = $images->get($this->country);
